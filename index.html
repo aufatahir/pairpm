@@ -1,0 +1,576 @@
+
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rekod Perkembangan Murid Pendidikan Islam</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --green-50:#f0fdf4;--green-100:#dcfce7;--green-200:#bbf7d0;--green-300:#86efac;
+    --green-400:#4ade80;--green-500:#22c55e;--green-600:#16a34a;--green-700:#15803d;
+    --green-800:#166534;--green-900:#14532d;
+    --emerald-50:#ecfdf5;--emerald-600:#059669;--emerald-700:#047857;
+    --teal-600:#0d9488;--teal-700:#0f766e;
+    --amber-400:#fbbf24;--amber-500:#f59e0b;
+    --gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;--gray-300:#d1d5db;
+    --gray-400:#9ca3af;--gray-500:#6b7280;--gray-600:#4b5563;--gray-700:#374151;
+    --gray-800:#1f2937;--gray-900:#111827;
+    --tp1:#ef4444;--tp2:#f97316;--tp3:#eab308;--tp4:#22c55e;--tp5:#3b82f6;--tp6:#8b5cf6;
+  }
+  body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--green-50);color:var(--gray-800);min-height:100vh;font-size:14px;line-height:1.5}
+  
+  .app-header{background:linear-gradient(135deg,var(--green-800) 0%,var(--green-600) 50%,var(--teal-600) 100%);color:white;padding:1rem 1.25rem;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,0.15)}
+  .app-header h1{font-size:1rem;font-weight:700;letter-spacing:-0.01em}
+  .app-header p{font-size:0.72rem;opacity:0.8;margin-top:2px}
+  .header-row{display:flex;align-items:center;gap:0.75rem;justify-content:space-between}
+  .header-icon{width:40px;height:40px;background:rgba(255,255,255,0.15);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+
+  .nav-tabs{display:flex;gap:4px;background:white;border-bottom:1px solid var(--gray-200);padding:0 1rem;overflow-x:auto;scrollbar-width:none}
+  .nav-tabs::-webkit-scrollbar{display:none}
+  .nav-tab{padding:0.6rem 0.9rem;font-size:0.78rem;font-weight:600;color:var(--gray-500);border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;transition:all 0.2s;background:none;border-top:none;border-left:none;border-right:none}
+  .nav-tab.active{color:var(--green-700);border-bottom-color:var(--green-600)}
+  .nav-tab:hover:not(.active){color:var(--gray-700)}
+
+  .main-content{padding:1rem;max-width:900px;margin:0 auto}
+
+  .card{background:white;border-radius:14px;border:1px solid var(--gray-200);padding:1.25rem;margin-bottom:1rem;box-shadow:0 1px 4px rgba(0,0,0,0.04)}
+  .card-title{font-size:0.85rem;font-weight:700;color:var(--green-800);margin-bottom:1rem;display:flex;align-items:center;gap:6px}
+  .card-title::before{content:'';width:3px;height:16px;background:var(--green-600);border-radius:2px;display:inline-block}
+
+  .form-group{margin-bottom:0.9rem}
+  label{display:block;font-size:0.75rem;font-weight:600;color:var(--gray-600);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.04em}
+  select,input{width:100%;padding:0.55rem 0.75rem;border:1.5px solid var(--gray-200);border-radius:9px;font-size:0.85rem;font-family:inherit;background:var(--gray-50);color:var(--gray-800);transition:border-color 0.2s,box-shadow 0.2s;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236b7280' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px}
+  select:focus,input:focus{outline:none;border-color:var(--green-500);box-shadow:0 0 0 3px rgba(34,197,94,0.1)}
+  select:disabled{opacity:0.5;cursor:not-allowed}
+
+  .btn{padding:0.55rem 1.1rem;border-radius:9px;font-size:0.82rem;font-weight:600;cursor:pointer;border:none;transition:all 0.2s;font-family:inherit;display:inline-flex;align-items:center;gap:6px}
+  .btn-primary{background:var(--green-600);color:white}
+  .btn-primary:hover{background:var(--green-700);transform:translateY(-1px);box-shadow:0 4px 12px rgba(22,163,74,0.3)}
+  .btn-secondary{background:var(--gray-100);color:var(--gray-700);border:1px solid var(--gray-200)}
+  .btn-secondary:hover{background:var(--gray-200)}
+  .btn-danger{background:#fee2e2;color:#dc2626;border:1px solid #fecaca}
+  .btn-danger:hover{background:#fecaca}
+  .btn-sm{padding:0.35rem 0.7rem;font-size:0.75rem}
+  .btn-row{display:flex;gap:8px;flex-wrap:wrap}
+
+  .pupil-list{list-style:none;display:grid;gap:4px}
+  .pupil-item{padding:0.5rem 0.75rem;border-radius:9px;background:var(--gray-50);border:1px solid var(--gray-100);font-size:0.8rem;color:var(--gray-700);cursor:pointer;transition:all 0.15s;display:flex;justify-content:space-between;align-items:center}
+  .pupil-item:hover{background:var(--green-50);border-color:var(--green-200)}
+  .pupil-item.selected{background:var(--green-100);border-color:var(--green-400);color:var(--green-900);font-weight:600}
+  .pupil-num{font-size:0.7rem;color:var(--gray-400);min-width:24px}
+  .pupil-avg{font-size:0.72rem;font-weight:700;padding:2px 8px;border-radius:20px;background:var(--gray-200);color:var(--gray-600)}
+
+  .tp-grid{display:grid;gap:4px;margin-top:0.75rem}
+  .sp-row{display:flex;align-items:center;gap:8px;padding:0.55rem 0.75rem;background:var(--gray-50);border-radius:9px;border:1px solid var(--gray-100)}
+  .sp-code{font-size:0.7rem;font-weight:700;color:var(--green-700);min-width:42px;flex-shrink:0}
+  .sp-desc{font-size:0.75rem;color:var(--gray-600);flex:1;line-height:1.3}
+  .tp-select{width:70px;padding:4px 6px;font-size:0.78rem;border:1px solid var(--gray-300);border-radius:6px;background:white;flex-shrink:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='7' viewBox='0 0 10 7'%3E%3Cpath fill='%236b7280' d='M1 1l4 4 4-4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 6px center;padding-right:20px}
+
+  .tp-badge{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;font-size:0.75rem;font-weight:700;color:white;flex-shrink:0}
+  .tp-0{background:var(--gray-300);color:var(--gray-600)}
+  .tp-1{background:var(--tp1)}
+  .tp-2{background:var(--tp2)}
+  .tp-3{background:var(--tp3)}
+  .tp-4{background:var(--tp4)}
+  .tp-5{background:var(--tp5)}
+  .tp-6{background:var(--tp6)}
+
+  .bidang-section{margin-bottom:1.25rem}
+  .bidang-header{display:flex;align-items:center;justify-content:space-between;padding:0.6rem 0.85rem;background:var(--green-700);color:white;border-radius:9px;margin-bottom:0.5rem;cursor:pointer}
+  .bidang-header h3{font-size:0.82rem;font-weight:700}
+  .bidang-avg{font-size:0.75rem;background:rgba(255,255,255,0.2);padding:2px 10px;border-radius:20px}
+
+  .summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px;margin-bottom:1rem}
+  .summary-card{background:var(--gray-50);border-radius:10px;padding:0.75rem;text-align:center;border:1px solid var(--gray-200)}
+  .summary-card .label{font-size:0.68rem;color:var(--gray-500);font-weight:600;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:4px}
+  .summary-card .value{font-size:1.4rem;font-weight:700}
+
+  .search-box{position:relative;margin-bottom:0.75rem}
+  .search-box input{padding-left:32px;background-image:none}
+  .search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--gray-400);font-size:16px;pointer-events:none}
+
+  .page{display:none}
+  .page.active{display:block}
+
+  .info-banner{background:var(--green-50);border:1px solid var(--green-200);border-radius:10px;padding:0.75rem 1rem;margin-bottom:1rem;display:flex;align-items:center;gap:10px}
+  .info-banner p{font-size:0.78rem;color:var(--green-800)}
+
+  .loading{text-align:center;padding:2rem;color:var(--gray-400);font-size:0.85rem}
+
+  .empty-state{text-align:center;padding:2.5rem 1rem;color:var(--gray-400)}
+  .empty-state .icon{font-size:40px;margin-bottom:0.75rem}
+  .empty-state p{font-size:0.85rem}
+
+  .class-stats-table{width:100%;border-collapse:collapse;font-size:0.75rem;overflow-x:auto;display:block}
+  .class-stats-table th{background:var(--green-700);color:white;padding:6px 8px;text-align:center;white-space:nowrap;font-weight:600}
+  .class-stats-table th:first-child{text-align:left}
+  .class-stats-table td{padding:5px 8px;border-bottom:1px solid var(--gray-100);vertical-align:middle}
+  .class-stats-table tr:hover td{background:var(--green-50)}
+  .class-stats-table td:first-child{font-weight:500;font-size:0.72rem}
+
+  @media(max-width:600px){
+    .main-content{padding:0.75rem}
+    .summary-grid{grid-template-columns:repeat(2,1fr)}
+    .sp-desc{font-size:0.7rem}
+  }
+
+  .chip{display:inline-block;font-size:0.7rem;padding:2px 8px;border-radius:20px;font-weight:600}
+  .chip-green{background:var(--green-100);color:var(--green-800)}
+  .chip-gray{background:var(--gray-100);color:var(--gray-600)}
+
+  .section-divider{height:1px;background:var(--gray-200);margin:1rem 0}
+
+  .print-note{font-size:0.72rem;color:var(--gray-400);text-align:center;margin-top:0.5rem}
+  
+  .saved-indicator{display:inline-flex;align-items:center;gap:4px;font-size:0.7rem;color:var(--green-600);font-weight:600;opacity:0;transition:opacity 0.3s}
+  .saved-indicator.show{opacity:1}
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <div class="header-row">
+    <div style="display:flex;align-items:center;gap:10px;flex:1">
+      <div class="header-icon">🕌</div>
+      <div>
+        <h1>Rekod Perkembangan Murid</h1>
+        <p>Pendidikan Islam — Sistem Rekod TP</p>
+      </div>
+    </div>
+    <div id="savedIndicator" class="saved-indicator">✓ Tersimpan</div>
+  </div>
+</div>
+
+<div class="nav-tabs">
+  <button class="nav-tab active" onclick="showPage('page-setup')">📋 Pilih Kelas</button>
+  <button class="nav-tab" onclick="showPage('page-record')" id="tabRecord">📝 Rekod TP</button>
+  <button class="nav-tab" onclick="showPage('page-class')">📊 Laporan Kelas</button>
+  <button class="nav-tab" onclick="showPage('page-print')">🖨 Cetak</button>
+</div>
+
+<div class="main-content">
+
+<!-- PAGE: SETUP -->
+<div class="page active" id="page-setup">
+  <div class="card">
+    <div class="card-title">Pilih Tahun & Kelas</div>
+    <div class="form-group">
+      <label>Tahun</label>
+      <select id="selTahun" onchange="onTahunChange()">
+        <option value="">-- Pilih Tahun --</option>
+        <option value="4">Tahun 4</option>
+        <option value="5">Tahun 5</option>
+        <option value="6">Tahun 6</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Kelas</label>
+      <select id="selKelas" onchange="onKelasChange()" disabled>
+        <option value="">-- Pilih Tahun dahulu --</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Bidang</label>
+      <select id="selBidang" onchange="onBidangChange()" disabled>
+        <option value="">-- Pilih Kelas dahulu --</option>
+      </select>
+    </div>
+    <div id="setupInfo" class="info-banner" style="display:none">
+      <span style="font-size:20px">✅</span>
+      <p id="setupInfoText"></p>
+    </div>
+    <button class="btn btn-primary" onclick="goToRecord()" id="btnGoRecord" style="display:none;width:100%">
+      Mula Rekod TP →
+    </button>
+  </div>
+
+  <div class="card" id="muridListCard" style="display:none">
+    <div class="card-title" id="muridListTitle">Senarai Murid</div>
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchMurid" placeholder="Cari nama murid..." oninput="filterMurid()">
+    </div>
+    <ul class="pupil-list" id="muridList"></ul>
+  </div>
+</div>
+
+<!-- PAGE: RECORD -->
+<div class="page" id="page-record">
+  <div class="card" id="recordHeader">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem">
+      <div>
+        <div style="font-size:0.7rem;font-weight:600;color:var(--gray-500);text-transform:uppercase;letter-spacing:0.04em">Murid</div>
+        <div style="font-size:1rem;font-weight:700;color:var(--green-800)" id="recordMuridName">-</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:0.7rem;font-weight:600;color:var(--gray-500);text-transform:uppercase;letter-spacing:0.04em">Bidang</div>
+        <div style="font-size:0.9rem;font-weight:700;color:var(--green-700)" id="recordBidangName">-</div>
+      </div>
+    </div>
+    <div class="summary-grid" id="recordSummary"></div>
+    <div class="btn-row">
+      <button class="btn btn-secondary btn-sm" onclick="prevMurid()">← Murid Sebelum</button>
+      <button class="btn btn-secondary btn-sm" onclick="nextMurid()">Murid Seterus →</button>
+    </div>
+  </div>
+  <div id="recordContent"></div>
+</div>
+
+<!-- PAGE: CLASS REPORT -->
+<div class="page" id="page-class">
+  <div class="card">
+    <div class="card-title">Laporan Kelas</div>
+    <div id="classReportContent">
+      <div class="empty-state"><div class="icon">📊</div><p>Pilih kelas dan bidang dahulu</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE: PRINT -->
+<div class="page" id="page-print">
+  <div class="card">
+    <div class="card-title">Pilihan Cetak</div>
+    <div style="display:grid;gap:10px">
+      <div style="background:var(--green-50);border:1px solid var(--green-200);border-radius:10px;padding:1rem">
+        <div style="font-weight:700;color:var(--green-800);margin-bottom:4px;font-size:0.85rem">📄 PDF Individu</div>
+        <p style="font-size:0.78rem;color:var(--gray-600);margin-bottom:0.75rem">Cetak rekod TP seorang murid — diperincikan mengikut bidang</p>
+        <div class="form-group">
+          <label>Pilih Murid</label>
+          <select id="printMuridSel" style="margin-bottom:8px"></select>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="printIndividu()">🖨 Jana PDF Individu</button>
+      </div>
+      <div style="background:var(--green-50);border:1px solid var(--green-200);border-radius:10px;padding:1rem">
+        <div style="font-weight:700;color:var(--green-800);margin-bottom:4px;font-size:0.85rem">📊 PDF Kelas (Landscape)</div>
+        <p style="font-size:0.78rem;color:var(--gray-600);margin-bottom:0.75rem">Cetak semua murid — purata TP setiap bidang dan keseluruhan</p>
+        <button class="btn btn-primary btn-sm" onclick="printKelas()">🖨 Jana PDF Kelas</button>
+      </div>
+    </div>
+    <p class="print-note" style="margin-top:1rem">Data disimpan berdasarkan Tahun + Kelas. Setiap kelas mempunyai storan berasingan.</p>
+  </div>
+</div>
+
+</div><!-- end main-content -->
+
+<script>
+const DATA = {
+  murid: {
+    4: {
+      'Kenanga': ['\'AISYAH MUNIRAH BINTI HISHAM','AA\'ESYAH ZULFAH BINTI MOHD ZIKRI IZHAM','ADWA RAHADATUL AISY','AHMAD DARRYL RAFAEL BIN RUSYDI','AHMAD MISHARY AKWA BIN AHMAD IKMAL','AISYAH FAIHA BINTI MOHAMMAD IZZUDIN','AISYAH HUMAIRA BINTI MOHD IRSHAD SHAFIQ','AISYAH SOFIA BINTI AZRAN','AMMAR MUZHAFFAR BIN MUZARIMAN','AQIL AHWAZ BIN AHMAD AFIQ','DANISH AIMAN BIN ABD FAIZAL','DHIA AIRINA BATRISYA BINTI MOHD FAIZAL','DHIA KHAYRA SAFIYA BINTI AZID','HASYA MALIKA BINTI MOHD SHAZLY','KAYYISA SOFIA BINTI MOHAMMED KHAIRI','KHAIRUL ZAHIRULHAQ BIN KHAIRUL SHAHNAN','LAYYINA LUTHFIYAH BINTI MUHAMMAD NAJIB','MUHAMAD DANISH HARRAZ BIN MUHAMAD AL FIRDAUS','MUHAMMAD ABID TAQIUDDIN BIN MOHD ARMIZI','MUHAMMAD ALIF MUAZ BIN HUSIEN','MUHAMMAD AMMAR AZFAR BIN MOHD AZLYMI','MUHAMMAD AMSYAR BIN MUHAMAD ADHA','MUHAMMAD ASYRAF BIN MUHAMMAD IQBAL RAZZAK','MUHAMMAD AZKA FARHAN BIN MOHD ADEY','MUHAMMAD QAYYUM MIQAELL BIN NOOR MUHAMMAD','NOOR AFIFAH SOFIA BINTI MOHAMAD ARIF','NUR AMIRAH NABILAH BINTI ABDUL RAZAK','NUR AWLIYA HUMAIRA BINTI MOHAMMAD AMMIRUL','NUR DANIA DAHLIA BINTI MUHAMAD KHAIRIN','NUR ELFIEYA IZZARA BINTI MUHAMMAD ALIF','NUR HANI AMMARAH BINTI MOHD.FAIZAL','QUSHAYYI BIN MUHAMAD SOBFIAN','WAN NUR KASTURI RAISHA BINTI WAN MUHAMAD ADIFIKRI'],
+      'Kasturi': ['AARIZ FAYYADH BIN AZAMI','ADAM SYAUQI BIN MUHAMMAD SYAFIQ','AIMY NUR ZHAFIRA BINTI ROSMAN','AINUL MARDHIAH BINTI MUSYAHADI','ALHAQEEF BIN NURHAFIZDIN','HAJIDAH BINTI MOHD FAIZAL','MUHAMMAD AARIZ ARSYAD BIN SHAMSUL','MUHAMMAD ADAM MIKHAIL BIN SHAH JAHAN','MUHAMMAD AMIRUL HAZIQ BIN MUHAMMAD SYAWAL','MUHAMMAD ARASY DAIYAN BIN KAMARUL NIZAM','MUHAMMAD ASYRAF IMAN BIN MOHD AYUB','MUHAMMAD AYDEN HILFIY BIN MOHD AFFENDIE','MUHAMMAD FIRAS AMSYAR BIN MOHAMMAD SHAZWAN','MUHAMMAD FIRDAUS BIN SAEWARI','MUHAMMAD KHAIR RIZQI BIN MOHD FAUZI','NIK NUR AISYAH AZ-ZAHRA BINTI MAZLAN','NUR AAIRA BASHIRAH BINTI IRWAN','NUR HANNA HUMAIRAH BINTI MUHAMMAD HAMIZAN','NUR IRENE FITIYA BINTI MUHAMMAD FARIZA','NUR SAFIYYA RAIHANA BINTI MUHAMAD FAHIZUL','NUR SHAZIA RAFIFAH BINTI MOHD FITRI','NURHANA MARISSA BINTI MUHAMAD SHAHIDAN','PUTERI AYRA NISRINA BINTI MOHAMAD RASHIDI','QASEH MARISSA ADAWIYAH BINTI MARZUKI','UMAR MUEEZ BIN SAMSUL','WAN NUH BIN WAN AHMAD RAFIUDDIN'],
+      'Kamelia': ['AYLEEN ADILAH BINTI MUHAMMAD AIZAD','HANA AATHIRAH BINTI MOHD RIZAL','HANNAN SAFIYYA BINTI SHARULDIN','KHAYRA FAYYOLA BINTI HASSAN ARASAN','MUHAMAD AMIRUL FIRDAUS BIN MOHD JEFFRY','MUHAMMAD ADAM DANIAL BIN IBRAM','MUHAMMAD AQIL NAUFAL BIN MOHD EBBY JEFRI','MUHAMMAD FARHAN HAFIZ BIN MOHAMED ALI','MUHAMMAD HAZIQ IQBAL BIN ABDUL KARIM','MUHAMMAD IRFAN BIN MOHAMAD HAFIS','MUHAMMAD SYAHMI AFHAM BIN MUHAMAD SARIZAM','NOR QASEH DAMIA BINTI AZUAR SHAH','NUR AMALIA NERISSA BINTI MD ASYRUL NIZAM','NUR ARIANA DAMIA BINTI MOHAMAD ZULKARNAIN','NUR KHAYLA AUNI BINTI MOHD SANI','NUR NAJMA ZAHRA BINTI ISHAK','NURUL IMAN BINTI SAPRI','RAJA ADRIAN SYAH BIN RAJA SAMSUDIN','SITI ALWIYAH SAFFIRA BINTI ABDULLAH','SYAZARIL SHAQUAN BIN FAIRIZ'],
+      'Kekwa': ['AREEZ RASYDAN BIN ABDULLAH','CHE MUAZ AL-FATTEH SYAH BIN CHE MAHMOD','LYDIYA NOR UMAIRAH BINTI ZULKIPLI','MOHAMMAD RAFFIEZAL BIN MOHD FADZLIE','MUHAMAD FIRAS RIDZUAN BIN NORAZWAN','MUHAMMAD AMMAR HAKIM BIN MAZELANI','MUHAMMAD AQIL BIN MOHD SHAFIZAN','MUHAMMAD ASHRAF ARYAN BIN ABDUL RAHMAN','MUHAMMAD IMAN FIRDAUS BIN MOHD YUSYAZUAN','MUHAMMAD SYAKIR NADHIF BIN ABDULLAH','MUHAMMAD ZILL QAYYIM BIN MUHAMMAD SHAUFFUAN','MUHAMMAD ZULHUZAIMIE BIN ABDUL HAFIZ','NABIESYAH BINTI ABDULLAH','NOR ADRIAN RAYQAL BIN NOR ASMAWI','NOR IHSAN BIN ABDUL AZIZ','NUR AAIRA SOFEA BINTI MUHAMMAD ZUL FIQQRY','NUR AFIQAH SYAHIRAH BINTI MOHD SAHI','NUR ALISHA ADRIANA BINTI MUHAMMAD SOBIRIN','NUR AZALEA KHALIIQAH BINTI ABDULLAH','NUR BATRISYA HAIRUL LIZAM BINTI ABDULLAH','NUR FARAH SYAHIDAH BINTI DILBAR KHAN','NUR INSYIRAH AISYAH BINTI MOHD KHAIRI','NUR QASEH MEDINA BINTI MOHD ERWAN FALIMIE','NURFARISHA SOFEA BINTI ABDULLAH','RAZIQ AHNAN BIN NASZEHAN','SITI ALWIYAH SAFFURA BINTI ABDULLAH','SITI NUR HAWA IMANI BINTI ABDULLAH','WAN NUR HIDAYAH BINTI WAN MOHD AFZAINIZAM']
+    },
+    5: {
+      'Kenanga': ['\'AMMAR FAWWAZ BIN MOHD TAUFIK','AHMAD ANIQ RAZIN ADHA BIN ADNAN','AHMAD AQIFF MUHAIMIN BIN AHMAD','AHMAD DZUL RAHMAN BIN ZULY RAHIMIE','AIRIN SOFEA BINTI AZMI','AIRIS SOFYA BINTI MOHD SHAIFUL LIZAN','AISH RAIHAN NAZMI BIN SHAARI','ANIS ZHAFIRA BINTI KHAIRUL NIZAM','ARIF FAHMI BIN SAIFULLIZAN','BADRINA BATRISYAH QAISARA BINTI IBRAM','ELMAN HAZIZ BIN EZLYSHAH','KHALISAH AMIRAH BINTI MOHAMAD HELMY','LUQMAN HAIKAL BIN ABDUL SYUKUR','MUHAMMAD ADAM HARRIS BIN ABDUL \'AZIM','MUHAMMAD AMAR FATEH BIN MOHD FIRDAUS','MUHAMMAD AMMAR BIN MUHAMAD ADHA','MUHAMMAD ASHRAFFY LUFFY BIN MAHADI','MUHAMMAD AWWAL FITRI BIN ABDULLAH','MUHAMMAD AZWAR SYAZWI BIN MUHAMMAD ASNAWI SAFFUAN','MUHAMMAD FIRDAUS BIN MOHAMAD FAZZIL','NAYLA BINTI MOHD ZAMRI','NOOR MUHAMMAD AZFAR BIN NOOR AZIZAN','NUR AFINA NATASHA BINTI BORAHAM','NUR AMILI INSYIRAH BINTI MOHD KHAIRUL ISZAT','NUR AMNAH AMNIYAH BINTI TANSAIDI','NUR DINI NADHIRA BINTI MOHAMMAD SHAHRIL','NUR JANNAH ALEEYSHA BINTI HERMAN SUSILA','NUR NAILAH KHADEEJA BINTI MOHD AZHAR','NURAISHA ALIFA BINTI MOHD RIDI','NURTASNEEM SAFIAH BINTI ABD MUTALIB','PUTERA RAYYAN IRFAN BIN MOHAMAD MUSTAKIM','PUTERI NUR ZAFIRAH BINTI MEGAT FADHLI','RAJA AYYASH BIN RAJA SHAHNIZAM','WAN SUCI ARIQA FARISA BINTI WAN FAKRUL AZIZ'],
+      'Kasturi': ['BATRISYA ERYNA BINTI AZLAN','CHE NUR SYAFINA BINTI MOHD HAFIZUL','KEISHA BINTI MOHD ZAMRI','MIQAIL ISKANDAR BIN DZULKARNAIN','MUHAMMAD AFIQ HAZUAN BIN MOHD AMIN','MUHAMMAD AISY AQEEL BIN PAIZUL HAQIMY','MUHAMMAD AKIF AMZAR BIN KHAIRUL FADZLI','MUHAMMAD JAFAR SAFWAN BIN JAMAL','MUHAMMAD KAMAL ZARIFF BIN KAMARUL AZHAR','MUHAMMAD KHALAF HIBATULLAH BIN MASWAN','MUHAMMAD NASIR RAFLI BIN RAZLAN','MUHAMMAD UWAIS FAKHRULLAH BIN HASHAMIZI','MUHAMMAD ZAFFRIL RAYYKAL BIN ABDUL SYAHID','NUR AISYA SOFEA BINTI AHMAD AZWAN','NUR AQILAH BINTI MOHD ASRI','NUR HANA KHAIRUNNISA BINTI MOHD RAFI','NUR INARA AUNI BINTI MOHAMAD HAIROL','NUR KHAIRIYAH BINTI KASMANIA AKIL','NUR KHAYLA AMANDA BINTI MOHAMMAD SARIZAN','NUR MARDHIYAH NAFEESA BINTI MOHD MAULUD','NUR MUMTAZ UMAIRAH BINTI NIZARKAN','NUR SYIFA RAU\'AH BINTI MOHD FITRI','NUR ZAHRA AISYAH BINTI MOHD AZHARUL ABIDIN','NURUL FATIMA BINTI AZIZ','NURUL HANI BINTI AZIZ','NURUL SYAQILA AQILAH BINTI BAHARUDDIN','QASEH MEDINA AISYA BINTI MARZUKI','RAISHA MALAEKA BINTI KHAIRUL ANUAR','WAN IBRAHIM RIFQI BIN WAN MOHD SHAHID'],
+      'Kamelia': ['AHMAD ADAM DANIAL BIN AHMAD NOOR AZLAN','AHMAD ALEEF ZIQRIE BIN AFIFI DZIAHUDDIN','AHMAD DANIYAL RIZQI BIN RUSYDI','AINUR HAWA ELISA BINTI JAMALUDIN','ALYA AFSHA DANIA BINTI HASMUNI','ARYAN LUTHFI BIN MUHAMMAD HAFIZI','IMAN BUQHARI BIN MOHARI','LUTH MALIQ BIN JAMADI','MUHAMAD UMAR HADIF BIN SAIFUL HIZAM','MUHAMMAD ADAM DARWISH BIN WAN MOHD ABDUL HAFIZ','MUHAMMAD AIDIL FARID BIN NASIRUDDIN','MUHAMMAD AISH RASYDAN BIN ABDULLAH','MUHAMMAD ARYAN WAFI BIN ARWAN','MUHAMMAD DARWISH BIN ADDY IZWAN','MUHAMMAD FAAREQ HELMI BIN MUHAMMAD WAHHIDIN','MUHAMMAD KAMIL IMAN BIN PAIZAL','MUHAMMAD SYAHEED NASREE BIN RUHAIZI','MUHAMMAD WAFIQ ZAFRAN BIN ABDUL RAHIM','MUHAMMAD ZAFRAN BIN MOHD HAFIF','NUH FAIZ ADLI BIN BUHARI','NUR HAIRINA QAISARA BINTI HAIRULIZZHAN','NUR HIDAYAH BINTI HENDRY','NUR QASRINA BINTI MUHAMMAD ERWAN','NURIMAN NIA AL-JANNAH BINTI MUHAMAD HASBULLAH','NURUL AYRA ADEENA BINTI KHAIRUL NIZAM','PUTRA INDRA BIN MUHAMAD FAHIZAL','SYAMIL SYAKIRIN BIN MOHD FAUZI']
+    },
+    6: {
+      'Kenanga': ['ABDULLAH NASIH \'ULWAN BIN AHMAD MUZAKKIR','AFFAN SYAHMI BIN MOHD NAZRI','AISYAH BINTI RUSDY','AKEF HAYYAN BIN SHAHRIL','AMNA ZARA BINTI MOHD SHAROL RAZIV','AMNI FITRISYA BINTI CHE MUD','DANISH AZIQ SHAH BIN AZID','HAZIQ IRHAM BIN ASMADI FUAD','IMAN AWLIYAA\' BINTI MOHD IDWAN','KHAIRATUL NURJANNAH BINTI KHAIRUL ZAMNOOR','LUTH THAQIF AREEQ BIN MOHD.ASMAWI','MOHAMAD RAYYAN MIKHAEL BIN MOHAMAD SAIFFUL','MUHAMMAD ADWA IKHWAN BIN MOHD KHAIRUL ISZAT','MUHAMMAD DANISH NAUFAL BIN MOHAMAD','MUHAMMAD HAFIZ BIN MOHAMMAD SHAHIDI','MUHAMMAD SHHAFIQ RIZAL BIN ABD RAZAK','NOR ALYA MAISARA BINTI ZULKIPLI','NUR AMANINA BINTI MOHAMAD HAFIS','NUR DAMIA KHALISAH BINTI MAHDHORY','NUR HANA INSYIRAH BINTI ROSMAN','NUR KHALISH HANA','NUR NAJWA HUDA BINTI ZULHAIDI','NUR QISYA RANIA BINTI MOHD SAIFUL FITRI','NUR ZIARAH AZWA BINTI YAMRIH','NURFAQIHAH AMANI BINTI MOHD ARMIZI','NURUL AISYAH BINTI AZIZAN','PUTERI AYUNI RAIHANA BINTI MEOR HAZRUL EFFENDY','PUTERI DHIYA AMANDA BINTI MOHAMAD RASHIDI','PUTERI NUR AIRIS AMANDA BINTI MOHD NUBAIRI','RAJA MUHAMMAD HAZIQ DZAKWAN BIN RAJA MOHD SAMSUDIN','SALSABILA BINTI ABDESLAM OUAKRIM','SITI NUR HIDAYAH BINTI MOHD TAWFEK','SITI ZUHAIRAH BINTI ZULKEFLI','SOFEA MALAEKA BINTI NORFADLI','WAN FARAH SYAFIKA BINTI WAN YAHAYA'],
+      'Kasturi': ['AINAA NADHIRAH BINTI MOHD KHAIRI','AINUR QEYRA IZZATTI BINTI NOOR MUHAMMAD','ARYANA AISYAH BINTI KHAIRUL RAZI','BADRUL BADRISYAH QUSYAIRY BIN IBRAM','DHIA AFRINA BINTI MOHD FAZRUL','IZZ\'ZARA AISYAH BINTI MUHAMMAD FAATHIR','KHAYLA ARISSA BINTI AHMAD KHUDRI','MIASARAH INSYIRAH BINTI FARID ISMAIL','MUHAMMAD ADAM MUSLIM BIN MUHAMMAD KHAIRUL SYAFIQ','MUHAMMAD ALEEF AZFAR BIN SUDIR SYAHRIN','MUHAMMAD AMMAR HARRAZ BIN MD SYARHAN','MUHAMMAD ANAQI AL-UQASHAH BIN MOHAMAD RAFI AL-HAFIS','MUHAMMAD ILHAM MIRZA BIN MUHAMMAD HAFFIZI','MUHAMMAD KHALIS SYAKIRIN BIN MOHD SANUSI','MUHAMMAD NAIM MUHAIMIN BIN ABDUL RAHIM','MUHAMMAD RAFIQ BIN RAZALI','MUHAMMAD RIZQI DAYYAN BIN RANDY','MUHAMMAD SYAMMIL FARHAN BIN SYAHRUL AMBIA','MUHAMMAD UMMAR LUQMAN BIN MOHAMAD KHAIRIL','MUHAMMAD WAFIY RAYQAL BIN MOHD NIZAM','NUR AALIYAH HUMYRAH BINTI MUHAMMAD SYUKOR','NUR ADRIANA FARISHA DAMIA BINTI HAFIZULLAH','NUR AIRA MARISSA BINTI LUQMAN AL-HAKIM','NUR AMIRAH UMAIRAH BINTI ABDULLAH','NUR DAMIA MELISSA BINTI MD ASYRUL NIZAM','NUR HANA HAZIRAH BINTI ZULKIFLY','NUR KHALESYA SOFIYYA BINTI MOHD HAFIZI','NUR NABILAH BINTI MUHAMAD','NUR QASSEH HUMAIRA BINTI MOHD MAULUD','NUR RANIA NAFEESA BINTI A RAMLE','NURIN SALSABILA HUSNA BINTI ROSMADI','NURUL AEYSYA AQEELA BINTI PAIZUL HAQIMY','UMUL UMAIRRAH BINTI NADZRI'],
+      'Kamelia': ['ADAM HAMIZAN RAZZAK BIN MUHAMMAD IQBAL RAZZAK','AISY RIZQI SHAH ZAMILI BIN ABDULLAH','AMMAR FIRAS BIN AZAMI','FARRA RANIA BINTI ABDUL HISHAM','IRFAN AMSYAR BIN MOHD KHAIRI','MOHAMAD ANAQIE MIKHAIL BIN MOHAMAD ZAWAWI','MUHAMAD ADAM NAUFAL BIN MOHAMAD ZULKARNAIN','MUHAMAD NAUFAL SHAFIQ BIN MOHAMAD SHAHRIZAM','MUHAMMAD ADAM HAIKAL BIN MUHAMMAD SUHAIMI','MUHAMMAD ADAM MUKHRIZ BIN MOHD ZAKI','MUHAMMAD ADAM RYQAL BIN ABDUL QAYYUM','MUHAMMAD DANIAL RIZQI BIN MOHD SYAMIL','MUHAMMAD FAYYAD LUTFI BIN ABDULLAH','MUHAMMAD NIZAM BIN SULAIMAN','MUHAMMAD RAQIB DAIYAN BIN MOHAMMAD ZULRAIMI','MUHAMMAD SHAREEZ AMMAR BIN MOHD SHAHROL RIZAM','NOR AMIRAH','NORSAFIKA BINTI ABDULLAH','NUR AZYATI BINTI MOHD KHAIRUL ARIFIN','PUTERI NISYHA BINTI ABDULLAH','QHAISA MIA IZZARA BINTI MOHD KHAIRIR','WAN MUHAMMAD LUTHFI BIN WAN MOHD SHAHID']
+    }
+  },
+  bidang: ['Al-Quran','Hadis','Aqidah','Ibadah','Sirah','Adab','Jawi'],
+  sp: {
+    4: {
+      'Al-Quran': [['1.1.1','Membaca Surah Al-Takathur dengan betul dan bertajwid'],['1.1.2','Membaca Surah Al-Takathur dan mengamalkannya dalam kehidupan harian secara beradab dan istiqamah'],['1.2.1','Membaca Surah Al-Qariah dengan betul dan bertajwid'],['1.2.2','Membaca Surah Al-Qariah dan mengamalkannya dalam kehidupan harian secara beradab dan istiqamah'],['1.3.1','Menghafaz Surah Al-Takathur dengan betul'],['1.3.2','Menghafaz Surah Al-Takathur dengan betul dan bertajwid'],['1.3.3','Mengamalkan hafazan Surah Al-Takathur dalam solat dan kehidupan harian secara beradab dan istiqamah'],['1.4.1','Menghafaz surah Al-Qariah dengan betul'],['1.4.2','Menghafaz surah Al-Qariah dengan betul dan bertajwid'],['1.4.3','Mengamalkan hafazan surah Al-Qariah dalam solat dan kehidupan harian secara beradab dan istiqamah'],['1.5.1','Menyatakan pengenalan surah Al-Ikhlas'],['1.5.2','Menjelaskan tuntutan ayat berdasarkan terjemahan surah Al-Ikhlas'],['1.5.3','Menganalisis kepentingan dan kelebihan mengamalkan surah Al-Ikhlas serta tuntutannya'],['1.5.4','Mengamalkan tuntutan surah Al-Ikhlas dalam kehidupan secara beradab dan istiqamah'],['1.6.1','Mengenalpasti bacaan izhar syafawi, ikhfa\' syafawi dan idgham mithlain dengan betul'],['1.6.2','Membaca bacaan izhar syafawi, ikhfa\' syafawi dan idgham mithlain dengan betul dan bertajwid'],['1.6.3','Mengaplikasikan bacaan izhar syafawi, ikhfa\' syafawi dan idgham mithlain dengan betul'],['1.6.4','Mengamalkan bacaan Al-Quran dengan betul dan bertajwid dalam kehidupan'],['1.7.1','Mengenalpasti bacaan qalqalah dengan betul'],['1.7.2','Membaca kalimah yang mengandungi bacaan qalqalah dengan betul dan bertajwid'],['1.7.3','Mengaplikasikan bacaan qalqalah dengan betul dan bertajwid'],['1.7.4','Mengamalkan bacaan Al-Quran dengan betul dan bertajwid'],['1.8.1','Mengenalpasti tanda waqaf dengan betul'],['1.8.2','Membaca ayat yang mengandungi tanda waqaf dengan betul'],['1.8.3','Mengaplikasikan tanda waqaf dengan betul dan bertajwid']],
+      'Hadis': [['2.1.1','Menyatakan tuntutan hadis berdasarkan bacaan dan terjemahannya'],['2.1.2','Menyatakan maksud tetamu'],['2.1.3','Mengaplikasikan adab memuliakan tetamu'],['2.1.4','Menganalisis kepentingan memuliakan tetamu'],['2.1.5','Mengamalkan dan menghayati tuntutan hadis dalam kehidupan secara beradab dan istiqamah']],
+      'Aqidah': [['3.1.1','Menyatakan pengertian nama Allah Al-Azim dan Al-Hamid'],['3.1.2','Menerangkan hukum beriman dengan nama Allah Al-Azim dan Al-Hamid berdasarkan dalil naqli'],['3.1.3','Menganalisis kepentingan beriman dengan nama Allah Al-Azim dan Al-Hamid'],['3.1.4','Membuktikan keimanan terhadap nama Allah Al-Azim dan Al-Hamid melalui Tindakan'],['3.1.5','Mengagungi kebesaran Allah dan mensyukuri nikmatnya dalam kehidupan'],['3.2.1','Menyatakan pengertian nabi dan rasul'],['3.2.2','Menerangkan hukum beriman dengan rasul berdasarkan dalil naqli'],['3.2.3','Menyenaraikan 25 nama rasul'],['3.2.4','Menjelaskan peranan rasul'],['3.2.5','Menganalisis kepentingan beriman kepada rasul'],['3.2.6','Membuktikan keimanan kepada rasul melalui Tindakan'],['3.2.7','Menjadikan Rasulullah sebagai ikutan dalam kehidupan'],['3.3.1','Menyatakan maksud kufur'],['3.3.2','Menerangkan hukum kufur berdasarkan dalil naqli'],['3.3.3','Menjelaskan bahagian-bahagian kufur'],['3.3.4','Menganalisis kesan kufur dalam kehidupan'],['3.3.5','Merumus tindakan menjauhi kufur'],['3.3.6','Mengelakkan perbuatan yang boleh membawa kepada kufur'],['3.4.1','Menyatakan maksud nifaq'],['3.4.2','Menerangkan hukum nifaq berdasarkan dalil naqli'],['3.4.3','Menjelaskan bahagian-bahagian nifaq'],['3.4.4','Menganalisis kesan nifaq dalam kehidupan'],['3.4.5','Merumus tindakan menjauhi nifaq'],['3.4.6','Mengelakkan perbuatan nifaq dalam kehidupan']],
+      'Ibadah': [['4.1.1','Menerangkan pengertian najis'],['4.1.2','Menjelaskan bahagian najis dan cara menyucikannya'],['4.1.3','Mengaplikasikan cara bersuci daripada najis mukhaffafah, mutawasitah dan mughallazah'],['4.1.4','Menghuraikan kepentingan bersuci dalam kehidupan harian'],['4.1.5','Menjaga kebersihan dan kesucian dalam semua aspek kehidupan'],['4.2.1','Menyatakan maksud azan dan iqamat'],['4.2.2','Membaca dan menghafaz lafaz azan dan iqamat serta jawabnya'],['4.2.3','Memperdengarkan azan dan iqamat dengan cara yang betul'],['4.2.4','Memperincikan adab sebelum, semasa dan selepas azan dan iqamat'],['4.2.5','Menghuraikan kepentingan azan dan iqamat'],['4.2.6','Menghormati azan dan iqamat serta bersegera menunaikan solat berjemaah'],['4.3.1','Menyatakan maksud puasa ramadan'],['4.3.2','Menerangkan hukum puasa ramadan berdasarkan dalil naqli'],['4.3.3','Menjelaskan syarat-syarat wajib, syarat-syarat sah dan rukun puasa ramadan'],['4.3.4','Menghuraikan sunat-sunat puasa ramadan'],['4.3.5','Menganalisis perkara-perkara yang membatalkan puasa ramadan'],['4.3.6','Merumus kepentingan puasa ramadan']],
+      'Sirah': [['5.1.1','Menyatakan latar belakang masyarakat Yathrib sehingga termeterai perjanjian aqabah'],['5.1.2','Menjelaskan isi perjanjian aqabah pertama dan perjanjian aqabah kedua'],['5.1.3','Menganalisis kepentingan perjanjian aqabah pertama dan perjanjian aqabah kedua'],['5.1.4','Merumus iktibar daripada penerimaan masyarakat Yathrib terhadap dakwah Nabi Muhammad'],['5.1.5','Mematuhi peraturan yang telah ditetapkan demi kesejahteraan hidup'],['5.2.1','Menyatakan maksud sifat fatanah Nabi Muhammad'],['5.2.2','Menjelaskan keunggulan sifat fatanah Nabi Muhammad melalui kisah kehidupan baginda'],['5.2.3','Mengaplikasikan tindakan Nabi Muhammad yang bersifat fatanah dalam kehidupan harian'],['5.2.4','Merumus tindakan Nabi Muhammad yang bersifat fatanah dan mengamalkannya'],['5.2.5','Bijaksana dalam setiap tindakan secara beradab dan istiqamah'],['5.3.1','Menyatakan maksud dakwah'],['5.3.2','Menjelaskan cara Nabi Muhammad berdakwah'],['5.3.3','Menghuraikan penentangan terhadap Nabi Muhammad ketika berdakwah'],['5.3.4','Mengaplikasi keperibadian Nabi Muhammad dalam berdakwah'],['5.3.5','Merumus keperibadian Nabi Muhammad dalam berdakwah dan mengamalkannya'],['5.3.6','Mencontohi keperibadian dan tindakan Rasulullah dalam berdakwah']],
+      'Adab': [['6.1.1','Menyatakan maksud dan hukum menutup aurat'],['6.1.2','Menerangkan hukum menutup aurat berdasarkan dalil naqli'],['6.1.3','Menjelaskan adab dan ciri-ciri berpakaian yang menepati syarak'],['6.1.4','Menghafaz doa berpakaian dan mengamalkannya'],['6.1.5','Mengaplikasi adab berpakaian yang menepati syarak'],['6.1.6','Merumus adab berpakaian yang menepati syarak'],['6.1.7','Menjaga adab berpakaian dengan mencontohi sunnah Rasulullah'],['6.2.1','Menyatakan maksud riadah'],['6.2.2','Menerangkan hukum beriadah berdasarkan dalil naqli'],['6.2.3','Menjelaskan adab beriadah yang menepati syarak'],['6.2.4','Mengaplikasi adab beriadah yang menepati syarak'],['6.2.5','Menganalisis kepentingan adab beriadah yang menepati syarak'],['6.2.6','Merumus adab beriadah yang menepati sunnah Rasulullah'],['6.2.7','Menjaga adab beriadah dengan mencontohi sunnah Rasulullah'],['6.3.1','Menyatakan maksud jiran'],['6.3.2','Menerangkan hukum beradab terhadap jiran berdasarkan dalil naqli'],['6.3.3','Menjelaskan hak-hak jiran'],['6.3.4','Mengaplikasi adab berjiran yang menepati syarak'],['6.3.5','Menganalisis kepentingan adab berjiran yang menepati syarak'],['6.3.6','Merumus adab berjiran yang menepati sunnah Rasulullah'],['6.3.7','Memelihara adab berjiran dengan mencontohi Rasulullah'],['6.4.1','Menyatakan maksud guru'],['6.4.2','Menerangkan hukum beradab terhadap guru berdasarkan dalil naqli'],['6.4.3','Menjelaskan adab terhadap guru'],['6.4.4','Mengaplikasi adab terhadap guru'],['6.4.5','Menganalisis kepentingan beradab terhadap guru'],['6.4.6','Merumus adab terhadap guru'],['6.4.7','Sentiasa menghormati guru dengan mencontohi akhlak Rasulullah']],
+      'Jawi': [['7.1.1','Mengenal kedudukan huruf hamzah dalam perkataan dengan betul'],['7.1.2','Membaca perkataan yang mengandungi huruf hamzah dengan betul'],['7.1.3','Menulis perkataan yang mengandungi huruf hamzah dengan betul'],['7.1.4','Mencintai tulisan jawi sebagai warisan budaya bangsa'],['7.2.1','Mengenal perkataan tradisi dengan betul'],['7.2.2','Membaca perkataan tradisi dengan betul'],['7.2.3','Menulis perkataan tradisi dengan betul'],['7.2.4','Menulis ayat yang mengandungi perkataan tradisi dengan betul'],['7.2.5','Mencintai tulisan jawi sebagai warisan budaya bangsa'],['7.3.1','Mengenal perkataan pinjaman bahasa inggeris dengan betul'],['7.3.2','Membaca perkataan pinjaman bahasa inggeris dengan betul'],['7.3.3','Menulis perkataan pinjaman bahasa inggeris dengan betul'],['7.3.4','Menulis ayat yang mengandungi perkataan pinjaman bahasa inggeris dengan betul'],['7.3.5','Mencintai tulisan jawi sebagai warisan budaya bangsa'],['7.4.1','Mengenal perkataan pinjaman bahasa arab dengan betul'],['7.4.2','Membaca perkataan pinjaman bahasa arab dengan betul'],['7.4.3','Menulis perkataan pinjaman bahasa arab dengan betul'],['7.4.4','Menulis ayat yang mengandungi perkataan pinjaman bahasa arab dengan betul'],['7.4.5','Mencintai tulisan jawi sebagai warisan budaya bangsa']]
+    },
+    5: {
+      'Al-Quran': [['1.1.1','Membaca Surah Al-Qadr dengan betul dan bertajwid'],['1.1.2','Membaca Al-Quran dalam kehidupan harian secara beradab dan istiqamah'],['1.2.1','Membaca Surah Al-Tin dengan betul dan bertajwid'],['1.2.2','Membaca Al-Quran dalam kehidupan harian secara beradab dan istiqamah'],['1.3.1','Menghafaz Surah Al-Qadr dengan betul dan bertajwid'],['1.3.2','Membaca Al-Quran dalam kehidupan harian secara beradab dan istiqamah'],['1.4.1','Menghafaz surah Al-Tin dengan betul dan bertajwid'],['1.4.2','Membaca Al-Quran dalam kehidupan harian secara beradab dan istiqamah'],['1.5.1','Menyatakan pengenalan surah Al-\'Asr'],['1.5.2','Menjelaskan tuntutan surah Al-\'Asr'],['1.5.3','Menganalisis kepentingan mengamalkan surah Al-\'Asr dan tuntutannya'],['1.5.4','Menghayati tuntutan surah Al-\'Asr secara beradab dan istiqamah'],['1.6.1','Membaca kalimah yang mengandungi mad silah qasirah, mad badal, mad \'iwadh, mad tamkin dan mad tabi\'ie diawal surah'],['1.6.2','Mengenalpasti kalimah yang mengandungi mad silah qasirah, mad badal, mad \'iwadh, mad tamkin dan mad tabi\'ie'],['1.6.3','Mengaplikasikan bacaan mad silah qasirah, mad badal, mad \'iwadh, mad tamkin dan mad tabi\'ie'],['1.6.4','Membaca Al-Quran dengan bertajwid dalam kehidupan harian secara beradab dan istiqamah']],
+      'Hadis': [['2.1.1','Menyatakan tuntutan hadis berdasarkan bacaan dan terjemahannya'],['2.1.2','Menyatakan maksud pemimpin'],['2.1.3','Mengaplikasikan adab terhadap pemimpin'],['2.1.4','Menganalisis kepentingan mentaati pemimpin'],['2.1.5','Mengamal dan menghayati tuntutan hadis dalam kehidupan secara beradab dan istiqamah']],
+      'Aqidah': [['3.1.1','Menyatakan pengertian nama Allah Al-Malik dan Al-Hasib'],['3.1.2','Menerangkan hukum beriman dengan nama Allah Al-Malik dan Al-Hasib berdasarkan dalil naqli'],['3.1.3','Menganalisis kepentingan beriman dengan nama Allah Al-Malik dan Al-Hasib'],['3.1.4','Membuktikan keimanan terhadap nama Allah Al-Malik dan Al-Hasib melalui tindakan'],['3.2.1','Menyatakan pengertian hari akhirat'],['3.2.2','Menjelaskan hukum beriman dengan hari akhirat berdasarkan dalil naqli'],['3.2.3','Menerangkan nama lain bagi hari akhirat'],['3.2.4','Menganalisis kepentingan beriman kepada hari Akhirat'],['3.2.5','Membuktikan keimanan terhadap hari Akhirat'],['3.3.1','Menyatakan maksud syirik'],['3.3.2','Menerangkan hukum syirik berdasarkan dalil naqli'],['3.3.3','Menjelaskan jenis dan perbuatan yang boleh menyebabkan syirik'],['3.3.4','Menilai kesan syirik dalam kehidupan'],['3.3.5','Menjauhi perbuatan yang boleh membawa kepada syirik dalam kehidupan'],['3.4.1','Menyatakan maksud sihir'],['3.4.2','Menerangkan hukum sihir berdasarkan dalil naqli'],['3.4.3','Menjelaskan contoh perbuatan sihir'],['3.4.4','Menganalisis kesan perbuatan sihir dalam kehidupan'],['3.4.5','Merumus tindakan menjauhi perbuatan sihir'],['3.4.6','Menjauhi daripada melakukan perbuatan sihir dalam kehidupan']],
+      'Ibadah': [['4.1.1','Menerangkan pengertian tayammum'],['4.1.2','Menerangkan sebab-sebab yang mengharuskan tayammum'],['4.1.3','Menjelaskan rukun dan sunat tayammum'],['4.1.4','Menghuraikan syarat-syarat tayammum'],['4.1.5','Mengaplikasi cara-cara tayammum'],['4.1.6','Memperincikan perkara-perkara yang membatalkan tayammum'],['4.1.7','Merumus kepentingan tayammum'],['4.1.8','Menjaga kebersihan dalam kehidupan secara beradab dan istiqamah'],['4.2.1','Menyatakan maksud solat berjemaah'],['4.2.2','Menerangkan kelebihan dan kepentingan solat berjemaah'],['4.2.3','Menjelaskan syarat sah solat berjemaah'],['4.2.4','Menganalisis tatacara solat berjemaah'],['4.2.5','Mengamalkan solat berjemaah secara beradab dan istiqamah'],['4.3.1','Menyatakan maksud solat jumaat'],['4.3.2','Menerangkan dalil naqli wajib solat jumaat'],['4.3.3','Membaca lafaz niat solat jumaat'],['4.3.4','Menjelaskan syarat wajib dan syarat sah solat jumaat'],['4.3.5','Menghuraikan amalan sunat sebelum solat jumaat'],['4.3.6','Menganalisis perkara-perkara yang dilarang ketika mendengar khutbah jumaat'],['4.3.7','Memperincikan hikmah solat jumaat'],['4.3.8','Bersegera untuk menunaikan solat jumaat secara beradab'],['4.4.1','Menyatakan maksud solat sunat dua hari raya dan hukumnya'],['4.4.2','Menjelaskan kaifiat solat sunat dua hari raya'],['4.4.3','Menganalisis amalan sunat sebelum dan selepas solat dua hari raya'],['4.4.4','Memperincikan kepentingan solat sunat dua hari raya'],['4.4.5','Menunaikan solat sunat dua hari raya secara beradab dan istiqamah']],
+      'Sirah': [['5.1.1','Menerangkan pengertian hijrah'],['5.1.2','Menerangkan sebab yang mendorong hijrah ke madinah'],['5.1.3','Menjelaskan peristiwa penting selepas Rasulullah menerima perintah hijrah ke madinah'],['5.1.4','Menganalisis kepentingan peristiwa hijrah ke madinah'],['5.1.5','Merumus iktibar daripada peristiwa hijrah ke Madinah'],['5.1.6','Menjadikan Rasulullah sebagai contoh dalam melakukan perubahan secara beradab dan istiqamah'],['5.2.1','Menyatakan maksud sifat itqan Nabi Muhammad'],['5.2.2','Menjelaskan keunggulan sifat itqan Nabi Muhammad melalui kisah kehidupan baginda'],['5.2.3','Mengaplikasikan tindakan Nabi Muhammad yang bersifat itqan dalam kehidupan harian'],['5.2.4','Merumus iktibar daripada tindakan Nabi Muhammad yang bersifat itqan'],['5.2.5','Bersungguh-sungguh menyempurnakan tanggungjawab dalam kehidupan secara beradab dan istiqamah'],['5.3.1','Menyatakan maksud pemimpin'],['5.3.2','Menjelaskan ciri-ciri kepimpinan Nabi Muhammad'],['5.3.3','Menganalisis peranan Nabi Muhammad sebagai seorang pemimpin'],['5.3.4','Merumus iktibar keperibadian Nabi Muhammad sebagai pemimpin'],['5.3.5','Berusaha meneladani kepimpinan Rasulullah sebagai pemimpin unggul']],
+      'Adab': [['6.1.1','Menyatakan adab menaiki kenderaan'],['6.1.2','Menghafaz doa menaiki kenderaan'],['6.1.3','Mengaplikasi adab menaiki kenderaan dan mengamalkan langkah-langkah keselamatan'],['6.1.4','Menganalisis kelebihan beradab menaiki kenderaan dan akibat mengabaikannya'],['6.1.5','Merumus adab menaiki kenderaan'],['6.1.6','Sentiasa mengamalkan adab menaiki kenderaan secara beradab dan istiqamah'],['6.2.1','Menyatakan pengertian dan hukum jual beli berdasarkan dalil naqli'],['6.2.2','Menerangkan adab berjual beli'],['6.2.3','Mengaplikasi adab berjual beli'],['6.2.4','Menganalisis kepentingan beradab ketika berjual beli'],['6.2.5','Mengamalkan adab berjual beli yang menepati syarak'],['6.3.1','Menyatakan maksud berkomunikasi'],['6.3.2','Menyatakan hukum beradab ketika berkomunikasi berdasarkan dalil naqli'],['6.3.3','Mengaplikasi adab berkomunikasi'],['6.3.4','Menganalisis kepentingan beradab ketika berkomunikasi'],['6.3.5','Mengamalkan adab berkomunikasi yang menepati syarak'],['6.4.1','Menyatakan maksud alam sekitar'],['6.4.2','Menerangkan hukum memelihara dan memulihara alam sekitar berdasarkan dalil naqli'],['6.4.3','Mengaplikasi adab memelihara dan memulihara alam sekitar yang menepati syarak'],['6.4.4','Menganalisis kepentingan memelihara dan memulihara alam sekitar'],['6.4.5','Bertanggungjawab memelihara dan memulihara alam sekitar secara beradab dan istiqamah']],
+      'Jawi': [['7.1.1','Membaca teks berdasarkan tema: amalan hidup sihat, kebudayaan (etnik), perayaan, sukan, pakaian'],['7.1.2','Membina dan menulis teks berdasarkan tema'],['7.1.3','Membina, menulis dan membaca pelbagai jenis teks berdasarkan tema'],['7.1.4','Melaksanakan aktiviti penulisan jawi pelbagai jenis tema diluar waktu pengajaran dan pembelajaran'],['7.2.1','Mengenalpasti peralatan menulis khat'],['7.2.2','Mengaplikasi cara mengguna peralatan khat dengan betul'],['7.2.3','Menulis huruf mengikut kaedah khat nasakh'],['7.2.4','Menulis perkataan mengikut kaedah khat nasakh'],['7.2.5','Menulis ayat mudah mengikut kaedah khat nasakh'],['7.2.6','Membudayakan aktiviti penulisan khat secara tekal']]
+    },
+    6: {
+      'Al-Quran': [['1.1.1','Membaca surah al-Syarh dengan betul dan bertajwid'],['1.1.2','Membaca al-Quran dalam kehidupan harian secara beradab dan istiqamah'],['1.2.1','Membaca surah al-Dhuha dengan betul dan bertajwid'],['1.2.2','Membaca al-Quran dalam kehidupan harian secara beradab dan istiqamah'],['1.3.1','Menghafaz surah al-Syarh dengan betul dan bertajwid'],['1.3.2','Membaca al-Quran dalam kehidupan harian secara beradab dan istiqamah'],['1.4.1','Menghafaz surah al-Dhuha dengan betul dan bertajwid'],['1.4.2','Membaca al-Quran dalam kehidupan harian secara beradab dan istiqamah'],['1.5.1','Menyatakan pengenalan surah al-Ma\'un'],['1.5.2','Menjelaskan tuntutan surah al-Ma\'un'],['1.5.3','Menganalisis kepentingan mengamalkan surah al-Ma\'un dan tuntutannya dalam membentuk keperibadian'],['1.5.4','Menghayati tuntutan surah al-Ma\'un secara beradab dan istiqamah'],['1.6.1','Membaca kalimah yang mengandungi bacaan mad lin dan mad a\'rid lisukun dengan betul dan bertajwid'],['1.6.2','Mengenal pasti kalimah yang mengandungi bacaan mad lin dan mad a\'rid lisukun dengan betul'],['1.6.3','Mengaplikasi bacaan mad lin dan mad a\'rid lisukun dengan betul dan bertajwid'],['1.6.4','Membaca al-Quran dengan betul dan bertajwid dalam kehidupan harian secara beradab dan istiqamah'],['1.7.1','Membaca kalimah yang mengandungi bacaan mad wajib Muttasil, mad Jaiz Munfasil dan Mad Silah Thowilah'],['1.7.2','Mengenal pasti kalimah yang mengandungi bacaan mad wajib Muttasil, mad Jaiz Munfasil dan Mad Silah Thowilah'],['1.7.3','Mengaplikasi bacaan mad wajib Muttasil, mad Jaiz Munfasil dan Mad Silah Thowilah dengan betul dan bertajwid'],['1.7.4','Membaca al-Quran dengan betul dan bertajwid dalam kehidupan harian secara beradab dan istiqamah'],['1.8.1','Membaca kalimah yang mengandungi bacaan mad lazim harfi, mad lazim kalimi, dan mad farq'],['1.8.2','Mengenal pasti kalimah yang mengandungi bacaan mad lazim harfi, mad lazim kalimi, dan mad farq'],['1.8.3','Mengaplikasi bacaan mad lazim harfi, mad lazim kalimi, dan mad farq dengan betul dan bertajwid'],['1.8.4','Membaca al-Quran dengan betul dan bertajwid dalam kehidupan harian secara beradab dan istiqamah']],
+      'Hadis': [['2.1.1','Menyatakan tuntutan hadis berdasarkan bacaan dan terjemahannya'],['2.1.2','Menyatakan maksud rasuah'],['2.1.3','Menerangkan sebab berlaku rasuah'],['2.1.4','Menjelaskan kesan rasuah terhadap diri, masyarakat dan negara'],['2.1.5','Menganalisis kepentingan menjauhi amalan rasuah'],['2.1.6','Menghayati tuntutan hadis secara beradab dan istiqamah dalam kehidupan']],
+      'Aqidah': [['3.1.1','Menyatakan pengertian nama Allah Al-Hadi dan Al-A\'dl'],['3.1.2','Menerangkan hukum beriman dengan nama Allah Al-Hadi dan Al-A\'dl berdasarkan dalil naqli'],['3.1.3','Menganalisis kepentingan beriman dengan nama Allah Al-Hadi dan Al-A\'dl'],['3.1.4','Membuktikan keimanan terhadap nama Allah Al-Hadi dan Al-A\'dl melalui tindakan secara beradab dan istiqamah'],['3.2.1','Menyatakan pengertian Qada\' dan Qadar'],['3.2.2','Menerangkan hukum beriman dengan Qada\' dan Qadar berdasarkan dalil naqli'],['3.2.3','Menganalisis kepentingan beriman dengan Qada\' dan Qadar'],['3.2.4','Membuktikan keimanan terhadap Qada\' dan Qadar melalui tindakan secara beradab dan istiqamah'],['3.3.1','Menyatakan maksud khurafat'],['3.3.2','Menerangkan hukum mengamalkan khurafat berdasarkan dalil naqli'],['3.3.3','Menjelaskan perbuatan khurafat'],['3.3.4','Menganalisis kesan mengamalkan khurafat dalam kehidupan'],['3.3.5','Merumus tindakan menjauhi khurafat'],['3.3.6','Menjauhi perbuatan khurafat dalam kehidupan'],['3.4.1','Menyatakan maksud Riddah'],['3.4.2','Menerangkan hukum Riddah berdasarkan dalil naqli'],['3.4.3','Menjelaskan perkara-perkara yang boleh menyebabkan Riddah dan tindakan menjauhinya'],['3.4.4','Menganalisis kesan Riddah'],['3.4.5','Menjauhi perkara-perkara yang boleh menyebabkan Riddah dalam kehidupan']],
+      'Ibadah': [['4.1.1','Menyatakan jenis-jenis hukum dalam Islam serta pengertiannya'],['4.1.2','Menjelaskan perbuatan wajib, sunat, makruh, haram dan harus dalam kehidupan'],['4.1.3','Menganalisis kepentingan beramal dengan perintah Allah dan akibat melakukan larangannya'],['4.1.4','Mentaati perintah Allah dan meninggalkan larangannya dalam kehidupan secara beradab dan istiqamah'],['4.2.1','Menyatakan maksud solat ketika sakit'],['4.2.2','Memperincikan tatacara melaksanakan solat ketika sakit'],['4.2.3','Mengaplikasi solat ketika sakit'],['4.2.4','Menganalisis kepentingan menunaikan solat ketika sakit'],['4.2.5','Menunaikan kewajipan solat dalam pelbagai keadaan secara beradab dan istiqamah'],['4.3.1','Menyatakan maksud solat jenazah dan hukum melaksanakannya'],['4.3.2','Memperincikan tatacara solat jenazah'],['4.3.3','Mengaplikasi solat jenazah'],['4.3.4','Merumus kepentingan pelaksanaan solat jenazah dalam membentuk keperibadian'],['4.3.5','Sentiasa menunaikan kefardhuan solat jenazah secara beradab dan istiqamah']],
+      'Sirah': [['5.1.1','Menyatakan latar belakang Madinah'],['5.1.2','Menjelaskan peranan masjid Nabawi'],['5.1.3','Menghuraikan persaudaraan Muhajirin dan Ansar'],['5.1.4','Memperincikan isi-isi piagam Madinah'],['5.1.5','Menghubungkaitkan iktibar daripada peristiwa pembentukan negara Madinah dengan kehidupan'],['5.1.6','Menjadikan Rasulullah s.a.w sebagai contoh dalam kehidupan secara beradab dan istiqamah'],['5.2.1','Menyatakan maksud tasamuh Nabi Muhammad s.a.w.'],['5.2.2','Menjelaskan keunggulan sifat tasamuh Nabi Muhammad s.a.w melalui kisah kehidupan baginda'],['5.2.3','Menghubungkaitkan iktibar daripada tindakan Nabi Muhammad s.a.w yang bersifat tasamuh dan mengamalkannya'],['5.2.4','Menjadikan sifat tasamuh Rasulullah s.a.w sebagai contoh dalam kehidupan secara beradab dan istiqamah']],
+      'Adab': [['6.1.1','Menyatakan adab menjaga kesihatan dan kebersihan diri'],['6.1.2','Menerangkan hukum menjaga kesihatan berdasarkan dalil naqli'],['6.1.3','Mengaplikasi adab menjaga kesihatan dan kebersihan diri yang menepati syarak'],['6.1.4','Menganalisis kepentingan menjaga kesihatan dan kebersihan diri'],['6.1.5','Bertanggungjawab menjaga kesihatan dan kebersihan diri secara beradab dan istiqamah'],['6.2.1','Menyatakan adab menggunakan media sosial'],['6.2.2','Menerangkan hukum menggunakan media sosial berdasarkan dalil naqli'],['6.2.3','Mengaplikasi adab menggunakan media sosial yang menepati syarak'],['6.2.4','Menganalisis kepentingan beradab ketika menggunakan media sosial'],['6.2.5','Mengamalkan adab menggunakan media sosial yang menepati syarak secara beradab dan istiqamah'],['6.3.1','Menyatakan adab menziarahi orang sakit'],['6.3.2','Menerangkan hukum menziarahi orang sakit berdasarkan dalil naqli'],['6.3.3','Mengaplikasi adab menziarahi orang sakit yang menepati syarak'],['6.3.4','Menganalisis kepentingan adab menziarahi orang sakit'],['6.3.5','Mengamalkan adab menziarahi orang sakit yang menepati syarak secara beradab dan istiqamah']],
+      'Jawi': [['7.1.1','Membaca teks berdasarkan tema: sirah, ekonomi, sains dan teknologi, kemasyarakatan, persekitaran'],['7.1.2','Membina dan menulis teks berdasarkan tema'],['7.1.3','Membina, menulis dan membaca pelbagai jenis teks berdasarkan tema'],['7.1.4','Melaksanakan aktiviti penulisan jawi pelbagai jenis tema diluar waktu pengajaran dan pembelajaran'],['7.2.1','Mengenalpasti peralatan menulis khat'],['7.2.2','Mengaplikasi cara mengguna peralatan khat dengan betul'],['7.2.3','Menulis huruf mengikut kaedah khat nasakh'],['7.2.4','Menulis perkataan mengikut kaedah khat nasakh'],['7.2.5','Menulis ayat mudah mengikut kaedah khat nasakh'],['7.2.6','Membudayakan aktiviti penulisan khat secara tekal']]
+    }
+  }
+};
+
+let state = {tahun:'',kelas:'',bidang:'',muridIdx:0,search:''};
+
+function storageKey(tahun,kelas){return `PI_T${tahun}_${kelas}`;}
+function loadData(tahun,kelas){
+  try{const d=localStorage.getItem(storageKey(tahun,kelas));return d?JSON.parse(d):{};}catch(e){return {};}
+}
+function saveData(tahun,kelas,data){
+  try{
+    localStorage.setItem(storageKey(tahun,kelas),JSON.stringify(data));
+    const ind=document.getElementById('savedIndicator');
+    ind.classList.add('show');
+    setTimeout(()=>ind.classList.remove('show'),2000);
+  }catch(e){}
+}
+function getTP(tahun,kelas,murid,bidang,sp){
+  const d=loadData(tahun,kelas);
+  return (d[murid]&&d[murid][bidang]&&d[murid][bidang][sp])||0;
+}
+function setTP(tahun,kelas,murid,bidang,sp,val){
+  const d=loadData(tahun,kelas);
+  if(!d[murid])d[murid]={};
+  if(!d[murid][bidang])d[murid][bidang]={};
+  d[murid][bidang][sp]=parseInt(val)||0;
+  saveData(tahun,kelas,d);
+}
+function calcBidangAvg(tahun,kelas,murid,bidang){
+  const sps=DATA.sp[tahun]&&DATA.sp[tahun][bidang]?DATA.sp[tahun][bidang]:[];
+  if(!sps.length)return 0;
+  let sum=0;sps.forEach(s=>{sum+=getTP(tahun,kelas,murid,bidang,s[0]);});
+  return Math.round(sum/sps.length);
+}
+function calcOverallAvg(tahun,kelas,murid){
+  const bidangs=DATA.bidang;
+  let sum=0;bidangs.forEach(b=>{sum+=calcBidangAvg(tahun,kelas,murid,b);});
+  return Math.round(sum/bidangs.length);
+}
+
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  const map={'page-setup':0,'page-record':1,'page-class':2,'page-print':3};
+  document.querySelectorAll('.nav-tab')[map[id]].classList.add('active');
+  if(id==='page-class')renderClassReport();
+  if(id==='page-print')renderPrintPage();
+  if(id==='page-record')renderRecord();
+}
+
+function onTahunChange(){
+  const t=document.getElementById('selTahun').value;
+  state.tahun=t;state.kelas='';state.bidang='';
+  const kelSel=document.getElementById('selKelas');
+  kelSel.innerHTML='<option value="">-- Pilih Kelas --</option>';
+  kelSel.disabled=!t;
+  if(t&&DATA.murid[t]){
+    Object.keys(DATA.murid[t]).forEach(k=>{
+      const o=document.createElement('option');o.value=k;o.textContent=`${t} ${k}`;kelSel.appendChild(o);
+    });
+  }
+  document.getElementById('selBidang').disabled=true;
+  document.getElementById('selBidang').innerHTML='<option value="">-- Pilih Kelas dahulu --</option>';
+  document.getElementById('setupInfo').style.display='none';
+  document.getElementById('btnGoRecord').style.display='none';
+  document.getElementById('muridListCard').style.display='none';
+}
+
+function onKelasChange(){
+  const k=document.getElementById('selKelas').value;
+  state.kelas=k;state.bidang='';
+  const bidSel=document.getElementById('selBidang');
+  bidSel.innerHTML='<option value="">-- Pilih Bidang --</option>';
+  bidSel.disabled=!k;
+  if(k){
+    DATA.bidang.forEach(b=>{const o=document.createElement('option');o.value=b;o.textContent=b;bidSel.appendChild(o);});
+  }
+  document.getElementById('setupInfo').style.display='none';
+  document.getElementById('btnGoRecord').style.display='none';
+  renderMuridList();
+  document.getElementById('muridListCard').style.display=k?'block':'none';
+}
+
+function onBidangChange(){
+  const b=document.getElementById('selBidang').value;
+  state.bidang=b;
+  const info=document.getElementById('setupInfo');
+  const btn=document.getElementById('btnGoRecord');
+  if(state.tahun&&state.kelas&&b){
+    info.style.display='flex';
+    document.getElementById('setupInfoText').textContent=`Tahun ${state.tahun} ${state.kelas} — Bidang: ${b} (${(DATA.sp[state.tahun]&&DATA.sp[state.tahun][b])?DATA.sp[state.tahun][b].length:0} Standard Pembelajaran)`;
+    btn.style.display='block';
+  }else{info.style.display='none';btn.style.display='none';}
+}
+
+function renderMuridList(){
+  if(!state.tahun||!state.kelas)return;
+  const murid=DATA.murid[state.tahun][state.kelas]||[];
+  const q=document.getElementById('searchMurid').value.toLowerCase();
+  const filtered=murid.filter(m=>m.toLowerCase().includes(q));
+  const title=document.getElementById('muridListTitle');
+  title.textContent=`Senarai Murid — Tahun ${state.tahun} ${state.kelas} (${filtered.length} murid)`;
+  const list=document.getElementById('muridList');
+  list.innerHTML='';
+  filtered.forEach((m,i)=>{
+    const ovg=calcOverallAvg(state.tahun,state.kelas,m);
+    const li=document.createElement('li');li.className='pupil-item';
+    const realIdx=murid.indexOf(m);
+    li.onclick=()=>{state.muridIdx=realIdx;showPage('page-record');};
+    li.innerHTML=`<span><span class="pupil-num">${i+1}.</span> ${m}</span>${ovg>0?`<span class="pupil-avg tp-badge tp-${ovg}" style="border-radius:6px;width:auto;padding:2px 8px">${ovg}</span>`:'<span class="pupil-avg">-</span>'}`;
+    list.appendChild(li);
+  });
+}
+
+function filterMurid(){renderMuridList();}
+
+function goToRecord(){
+  if(!state.tahun||!state.kelas||!state.bidang)return;
+  state.muridIdx=0;
+  showPage('page-record');
+}
+
+function getMuridList(){return DATA.murid[state.tahun]&&DATA.murid[state.tahun][state.kelas]?DATA.murid[state.tahun][state.kelas]:[];}
+
+function renderRecord(){
+  if(!state.tahun||!state.kelas){
+    document.getElementById('recordContent').innerHTML='<div class="empty-state"><div class="icon">📋</div><p>Sila pilih kelas dahulu di tab "Pilih Kelas"</p></div>';
+    return;
+  }
+  const murid=getMuridList();
+  if(!murid.length)return;
+  if(state.muridIdx>=murid.length)state.muridIdx=0;
+  const nama=murid[state.muridIdx];
+  document.getElementById('recordMuridName').textContent=`${state.muridIdx+1}. ${nama}`;
+  document.getElementById('recordBidangName').textContent=state.bidang||'Semua Bidang';
+  renderSummary(nama);
+  renderSPForm(nama);
+}
+
+function renderSummary(nama){
+  const container=document.getElementById('recordSummary');
+  container.innerHTML='';
+  DATA.bidang.forEach(b=>{
+    const avg=calcBidangAvg(state.tahun,state.kelas,nama,b);
+    const card=document.createElement('div');card.className='summary-card';
+    card.innerHTML=`<div class="label">${b}</div><div class="value tp-badge tp-${avg}" style="width:36px;height:36px;margin:4px auto 0;font-size:1rem">${avg||'-'}</div>`;
+    container.appendChild(card);
+  });
+  const overall=calcOverallAvg(state.tahun,state.kelas,nama);
+  const oc=document.createElement('div');oc.className='summary-card';oc.style.background='var(--green-50)';oc.style.borderColor='var(--green-300)';
+  oc.innerHTML=`<div class="label" style="color:var(--green-700)">Keseluruhan</div><div class="value tp-badge tp-${overall}" style="width:40px;height:40px;margin:4px auto 0;font-size:1.1rem">${overall||'-'}</div>`;
+  container.appendChild(oc);
+}
+
+function renderSPForm(nama){
+  const container=document.getElementById('recordContent');
+  container.innerHTML='';
+  const bidangsToShow=state.bidang?[state.bidang]:DATA.bidang;
+  bidangsToShow.forEach(b=>{
+    const sps=DATA.sp[state.tahun]&&DATA.sp[state.tahun][b]?DATA.sp[state.tahun][b]:[];
+    const avg=calcBidangAvg(state.tahun,state.kelas,nama,b);
+    const sec=document.createElement('div');sec.className='bidang-section';
+    sec.innerHTML=`<div class="bidang-header"><h3>📖 ${b}</h3><span class="bidang-avg">Purata: ${avg||'-'}</span></div>`;
+    const grid=document.createElement('div');grid.className='tp-grid';
+    sps.forEach(([code,desc])=>{
+      const curTP=getTP(state.tahun,state.kelas,nama,b,code);
+      const row=document.createElement('div');row.className='sp-row';
+      row.innerHTML=`<span class="sp-code">${code}</span><span class="sp-desc">${desc}</span><select class="tp-select" onchange="onTPChange('${nama}','${b}','${code}',this.value,this)"><option value="0">-</option>${[1,2,3,4,5,6].map(n=>`<option value="${n}"${curTP==n?' selected':''}>${n}</option>`).join('')}</select>`;
+      grid.appendChild(row);
+    });
+    sec.appendChild(grid);
+    container.appendChild(sec);
+  });
+}
+
+function onTPChange(nama,bidang,sp,val,sel){
+  setTP(state.tahun,state.kelas,nama,bidang,sp,val);
+  renderSummary(nama);
+  const avg=calcBidangAvg(state.tahun,state.kelas,nama,bidang);
+  const headers=document.querySelectorAll('.bidang-header');
+  headers.forEach(h=>{if(h.querySelector('h3').textContent.includes(bidang)){h.querySelector('.bidang-avg').textContent=`Purata: ${avg||'-'}`;}});
+}
+
+function prevMurid(){
+  const murid=getMuridList();
+  if(state.muridIdx>0){state.muridIdx--;renderRecord();}
+}
+function nextMurid(){
+  const murid=getMuridList();
+  if(state.muridIdx<murid.length-1){state.muridIdx++;renderRecord();}
+}
+
+function renderClassReport(){
+  if(!state.tahun||!state.kelas){
+    document.getElementById('classReportContent').innerHTML='<div class="empty-state"><div class="icon">📊</div><p>Sila pilih kelas dahulu</p></div>';
+    return;
+  }
+  const murid=getMuridList();
+  const bidangs=DATA.bidang;
+  let html=`<div style="overflow-x:auto"><table class="class-stats-table"><thead><tr><th>Nama Murid</th>`;
+  bidangs.forEach(b=>{html+=`<th>${b}</th>`;});
+  html+=`<th>Keseluruhan</th></tr></thead><tbody>`;
+  murid.forEach(m=>{
+    html+=`<tr><td>${m}</td>`;
+    let sum=0;
+    bidangs.forEach(b=>{
+      const avg=calcBidangAvg(state.tahun,state.kelas,m,b);
+      html+=`<td style="text-align:center"><span class="tp-badge tp-${avg}" style="width:24px;height:24px;font-size:0.7rem;display:inline-flex;align-items:center;justify-content:center;border-radius:50%">${avg||'-'}</span></td>`;
+      sum+=avg;
+    });
+    const overall=Math.round(sum/bidangs.length);
+    html+=`<td style="text-align:center;font-weight:700"><span class="tp-badge tp-${overall}" style="width:28px;height:28px;font-size:0.78rem;display:inline-flex;align-items:center;justify-content:center;border-radius:50%">${overall||'-'}</span></td></tr>`;
+  });
+  html+=`</tbody></table></div>`;
+  document.getElementById('classReportContent').innerHTML=html;
+}
+
+function renderPrintPage(){
+  const sel=document.getElementById('printMuridSel');
+  sel.innerHTML='<option value="">-- Pilih Murid --</option>';
+  if(state.tahun&&state.kelas){
+    getMuridList().forEach((m,i)=>{const o=document.createElement('option');o.value=i;o.textContent=m;sel.appendChild(o);});
+  }
+}
+
+function printIndividu(){
+  const idx=parseInt(document.getElementById('printMuridSel').value);
+  if(isNaN(idx)||!state.tahun||!state.kelas){alert('Sila pilih kelas dan murid dahulu!');return;}
+  const murid=getMuridList();
+  const nama=murid[idx];
+  const bidangs=DATA.bidang;
+  let rows='';
+  bidangs.forEach(b=>{
+    const sps=DATA.sp[state.tahun]&&DATA.sp[state.tahun][b]?DATA.sp[state.tahun][b]:[];
+    const avg=calcBidangAvg(state.tahun,state.kelas,nama,b);
+    rows+=`<tr style="background:#166534;color:white"><td colspan="3" style="padding:6px 10px;font-weight:700">📖 ${b} — Purata: ${avg||'-'}</td></tr>`;
+    sps.forEach(([code,desc])=>{
+      const tp=getTP(state.tahun,state.kelas,nama,b,code);
+      rows+=`<tr><td style="padding:5px 8px;font-size:11px;font-weight:600;color:#166534;white-space:nowrap">${code}</td><td style="padding:5px 8px;font-size:11px">${desc}</td><td style="padding:5px 8px;text-align:center;font-weight:700">${tp||'-'}</td></tr>`;
+    });
+  });
+  const overall=calcOverallAvg(state.tahun,state.kelas,nama);
+  const bidangSummary=bidangs.map(b=>`<tr><td style="padding:4px 8px">${b}</td><td style="padding:4px 8px;text-align:center;font-weight:700">${calcBidangAvg(state.tahun,state.kelas,nama,b)||'-'}</td></tr>`).join('');
+  const win=window.open('','_blank');
+  win.document.write(`<!DOCTYPE html><html><head><title>Rekod Individu - ${nama}</title><style>body{font-family:Arial,sans-serif;margin:20px;font-size:12px}h1{font-size:16px;color:#166534}h2{font-size:13px;color:#166534}table{width:100%;border-collapse:collapse}td,th{border:1px solid #d1d5db}tr:nth-child(even){background:#f9fafb}@media print{body{margin:10px}}</style></head><body><div style="text-align:center;margin-bottom:16px"><h1>🕌 Rekod Perkembangan Murid Pendidikan Islam</h1><h2>Tahun ${state.tahun} ${state.kelas}</h2><div style="font-size:14px;font-weight:700;margin-top:8px">${nama}</div><div style="font-size:11px;color:#6b7280">Tarikh: ${new Date().toLocaleDateString('ms-MY')}</div></div><h2>Ringkasan Purata Bidang</h2><table style="margin-bottom:16px;width:50%"><tr style="background:#166534;color:white"><th style="padding:5px 8px">Bidang</th><th style="padding:5px 8px">Purata TP</th></tr>${bidangSummary}<tr style="background:#166534;color:white"><td style="padding:5px 8px;font-weight:700">KESELURUHAN</td><td style="padding:5px 8px;text-align:center;font-weight:700">${overall||'-'}</td></tr></table><h2>Rekod Standard Pembelajaran</h2><table><thead><tr style="background:#166534;color:white"><th style="padding:6px 8px;width:60px">Kod SP</th><th style="padding:6px 8px">Standard Pembelajaran</th><th style="padding:6px 8px;width:50px">TP</th></tr></thead><tbody>${rows}</tbody></table><div style="margin-top:12px;font-size:10px;color:#9ca3af;text-align:center">Dicetak daripada Sistem Rekod Perkembangan Murid Pendidikan Islam</div><script>window.onload=()=>window.print();<\/script></body></html>`);
+  win.document.close();
+}
+
+function printKelas(){
+  if(!state.tahun||!state.kelas){alert('Sila pilih kelas dahulu!');return;}
+  const murid=getMuridList();
+  const bidangs=DATA.bidang;
+  let headerCols=bidangs.map(b=>`<th style="padding:5px 6px;min-width:60px">${b}</th>`).join('');
+  let rows=murid.map((m,i)=>{
+    let cols=bidangs.map(b=>{const avg=calcBidangAvg(state.tahun,state.kelas,m,b);return `<td style="text-align:center;padding:4px 5px">${avg||'-'}</td>`;}).join('');
+    const overall=calcOverallAvg(state.tahun,state.kelas,m);
+    return `<tr${i%2===0?' style="background:#f9fafb"':''}><td style="padding:4px 6px;font-size:10px">${i+1}. ${m}</td>${cols}<td style="text-align:center;font-weight:700;background:#dcfce7;padding:4px 5px">${overall||'-'}</td></tr>`;
+  }).join('');
+  const win=window.open('','_blank');
+  win.document.write(`<!DOCTYPE html><html><head><title>Laporan Kelas - Tahun ${state.tahun} ${state.kelas}</title><style>body{font-family:Arial,sans-serif;margin:10px;font-size:11px}h1{font-size:13px;color:#166534;text-align:center}table{width:100%;border-collapse:collapse;font-size:10px}td,th{border:1px solid #d1d5db}th{background:#166534;color:white}@page{size:A4 landscape;margin:1cm}@media print{body{margin:5px}}</style></head><body><div style="text-align:center;margin-bottom:10px"><h1>🕌 Rekod Perkembangan Murid Pendidikan Islam</h1><div style="font-weight:700">Tahun ${state.tahun} ${state.kelas} — Laporan Keseluruhan</div><div style="font-size:9px;color:#6b7280">Tarikh: ${new Date().toLocaleDateString('ms-MY')}</div></div><table><thead><tr><th style="padding:5px 6px;min-width:180px;text-align:left">Nama Murid</th>${headerCols}<th style="padding:5px 6px;min-width:70px">Keseluruhan</th></tr></thead><tbody>${rows}</tbody></table><div style="margin-top:8px;font-size:9px;color:#9ca3af;text-align:center">Sistem Rekod Perkembangan Murid Pendidikan Islam</div><script>window.onload=()=>window.print();<\/script></body></html>`);
+  win.document.close();
+}
+
+// Init
+document.getElementById('selKelas').disabled=true;
+document.getElementById('selBidang').disabled=true;
+</script>
+</body>
+</html>
